@@ -1,0 +1,22 @@
+{% block content %}
+<h1>{% block title %} Denuncie a avaliação {% endblock %}</h1>
+
+<form method="post">
+    
+    
+    <div class="registro-group">
+        <label for="registro">Fale o porque essa avaliação deve ser deletada</label>
+        <input type="text" name="denuncia"
+               class="registro-control"
+               value="{{ request.form['denuncia'] }}"></input>
+    </div>
+    
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+
+<a href="/home"> Home </a>
+
+{% endblock %}

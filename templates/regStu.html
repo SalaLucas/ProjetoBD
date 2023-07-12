@@ -1,0 +1,40 @@
+{% block content %}
+<h1>{% block title %} Registre-se {% endblock %}</h1>
+
+<form method="post">
+    <div class="registro-group">
+        <label for="registro">Email</label>
+        <input type="text" name="email"
+               class="registro-control"
+               value="{{ request.form['email'] }}"></input>
+    </div>
+
+    <div class="registro-group">
+        <label for="senha">Senha</label>
+        <input type="text" name="senha"
+                  class="registro-control"
+                  value="{{ request.form['senha'] }}"></input>
+    </div>
+
+    <div class="registro-group">
+        <label for="email">Curso</label>
+        <input type="text" name="curso"
+                  class="registro-control"
+                  value="{{ request.form['curso'] }}"></input>
+    </div>
+
+    <div class="registro-group">
+        <label for="matricula">Matricula</label>
+        <input type="text" name="matricula"
+                  class="registro-control"
+                  value="{{ request.form['matricula'] }}"></input>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+
+<a href="/"> Logue como Aluno </a>
+
+{% endblock %}

@@ -1,0 +1,14 @@
+{% block content %}
+    <h1>{% block title %} Avaliações das aulas {% endblock %}</h1>
+    <a href="/createAva"> cria uma avaliacao</a>
+    <a href="/denuncias"> ver denuncias</a>
+
+    {% for post in posts %}
+        <h2>{{ post['turma_id'] }} </h2>
+        <h3>{{ post['comentario'] }}</h3>
+
+        <a href="{{url_for('edit', id=post['id'])}}"> editar essa avaliacao</a>
+        <a href="{{url_for('delete',  id=post['id'])}}"> apagar essa avaliacao</a>
+        <a href="{{url_for('denuncia',  id=post['id'])}}"> denuncia essa avaliacao</a>
+    {% endfor %}
+{% endblock %}

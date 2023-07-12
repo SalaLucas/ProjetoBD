@@ -1,0 +1,25 @@
+{% block content %}
+<h1>{% block title %} Login Aluno {% endblock %}</h1>
+
+<form method="post">
+    <div class="login-group">
+        <label for="login">Email</label>
+        <input type="text" name="email"
+               class="login-control"
+               value="{{ request.form['email'] }}"></input>
+    </div>
+
+    <div class="login-group">
+        <label for="senha">Senha</label>
+        <input type="text" name="senha"
+                  class="login-control"
+                  value="{{ request.form['senha'] }}"></input>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+
+<a href="/reg"> Cadastre sua conta </a>
+
+{% endblock %}
