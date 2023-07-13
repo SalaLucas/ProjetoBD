@@ -146,8 +146,8 @@ def denuncia(id):
         coment = request.form['denuncia']
 
         conn = get_db_connection()
-        conn.execute('INSERT INTO denuncia (report, aluno_id, avaliacao_id) VALUES (?, ?, ?)',
-                        (coment, session['matricula'],id))
+        conn.execute('INSERT INTO denuncia (report, avaliacao_id) VALUES (?, ?, ?)',
+                        (coment, id))
         conn.commit()
         conn.close()
         return redirect(url_for('home'))
