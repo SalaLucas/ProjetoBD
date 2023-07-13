@@ -122,6 +122,16 @@ def delete(id):
     conn.close()
     return redirect(url_for('home'))
 
+@app.route('/<int:id>/deleteRep', methods=('POST','GET'))
+def deleteRep(id):
+    conn = get_db_connection()
+    conn.execute('DELETE FROM avaliacoes WHERE id = (SELECT avaliacao_id FROM denuncia WHERE id= ?)', (id,))
+    conn.execute('DELETE FROM denuncia WHERE id = ?', (id,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('home'))
+
+
 
 @app.route('/denuncias', methods=('GET', 'POST'))
 def report():
