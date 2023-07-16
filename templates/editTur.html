@@ -1,0 +1,28 @@
+{% block content %}
+<h1>{% block title %} Edita a turma {% endblock %}</h1>
+
+<form method="post">
+
+    <div class="registro-group">
+        <label for="registro">Qual o novo numero da turma?</label>
+        <input type="text" name="numero"
+               class="registro-control"
+               value="{{ request.form['numero'] }}"></input>
+    </div>
+
+    <div class="registro-group">
+        <label for="registro">Qual o id do novo professor?</label>
+        <input type="text" name="professor"
+               class="registro-control"
+               value="{{ request.form['professor'] }}"></input>
+    </div>
+    
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+
+<a href="/home"> Home </a>
+
+{% endblock %}

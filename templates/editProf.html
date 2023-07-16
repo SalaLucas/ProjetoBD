@@ -1,0 +1,29 @@
+{% block content %}
+<h1>{% block title %} Edita a avaliação {% endblock %}</h1>
+
+<form method="post">
+
+    <div class="registro-group">
+        <label for="registro">Qual o nome do professor?</label>
+        <input type="text" name="nome"
+               class="registro-control"
+               value="{{ request.form['nome'] }}"></input>
+    </div>
+    
+    
+    <div class="registro-group">
+        <label for="registro">Qual o novo departamento do professor?</label>
+        <input type="text" name="departamento"
+               class="registro-control"
+               value="{{ request.form['departamento'] }}"></input>
+    </div>
+    
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+
+<a href="/home"> Home </a>
+
+{% endblock %}

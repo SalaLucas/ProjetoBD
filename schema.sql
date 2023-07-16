@@ -1,12 +1,3 @@
-DROP TABLE IF EXISTS alunos;
-DROP TABLE IF EXISTS departamentos;
-DROP TABLE IF EXISTS professores;
-DROP TABLE IF EXISTS materias;
-DROP TABLE IF EXISTS avaliacoes;
-DROP TABLE IF EXISTS turma;
-DROP TABLE IF EXISTS denuncia;
-
-
 CREATE TABLE IF NOT EXISTS alunos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     email VARCHAR(100) NOT NULL UNIQUE,
@@ -74,3 +65,17 @@ CREATE TABLE IF NOT EXISTS denuncia (
     FOREIGN KEY (avaliacao_id)
     REFERENCES avaliacoes (id)
 );
+
+CREATE VIEW vw_turma AS
+    SELECT professores.nome AS professor_nome, materias.nome AS materia_nome, turma.numero AS turma_numero, turma.id AS id
+    FROM professores
+    JOIN materias ON professores.departamento_id = materias.departamento_id
+    JOIN turma ON materias.id = turma.materia_id;
+
+
+CREATE TRIGGER deleta_denuncia
+AFTER DELETE ON avaliacoes
+FOR EACH ROW
+BEGIN
+    DELETE FROM denuncia WHERE avaliacao_id = OLD.id;
+END;

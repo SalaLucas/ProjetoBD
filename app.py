@@ -45,6 +45,7 @@ def loginStudent():
                 #usar session
                 session['matricula'] = aluno['matricula']
                 session['email'] = aluno['email']
+                session['admin'] = aluno['is_admin']
                 return redirect(url_for('home'))
 
     return render_template('loginStu.html')
@@ -53,7 +54,6 @@ def loginStudent():
 def registerStudent():
     if request.method == 'POST':
 
-        print(request.form)
         email = request.form['email']
         senha = request.form['senha']
         curso = request.form['curso']
@@ -66,6 +66,7 @@ def registerStudent():
 
         session['matricula'] = matricula
         session['email'] = email
+        session['admin'] = 0
 
         return redirect(url_for('home'))
 
@@ -76,13 +77,12 @@ def home():
     conn = get_db_connection()
     posts = conn.execute('SELECT * FROM avaliacoes').fetchall()
     conn.close()
-    return render_template('home.html', posts=posts)
+    return render_template('home.html', posts=posts, admin=session['admin'])
 
 
 @app.route('/<int:id>/edit', methods=('GET', 'POST'))
 def edit(id):
     post = get_post(id)
-
     if request.method == 'POST':
 
         content = request.form['avaliacao']
@@ -138,7 +138,7 @@ def report():
     aluno = get_student(session['email'])
     if(aluno == None):
         redirect(url_for('home'))
-    print(aluno['is_admin'])
+
     if(aluno['is_admin'] == 0):
         return redirect(url_for('home'))
 
@@ -163,3 +163,116 @@ def denuncia(id):
         return redirect(url_for('home'))
 
     return render_template('denunciar.html')
+
+@app.route('/alunos', methods=('GET', 'POST'))
+def alunos():
+    atual = get_student(session['email'])
+    conn = get_db_connection()
+    posts = conn.execute('SELECT * FROM alunos').fetchall()
+    conn.close()
+    return render_template('alunos.html', posts=posts,is_admin=atual['is_admin'])
+
+@app.route('/<int:id>/deleteAlu', methods=('POST','GET'))
+def deleteAlu(id):
+    conn = get_db_connection()
+    conn.execute('DELETE FROM alunos WHERE id = ?', (id,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('alunos'))
+
+
+@app.route('/createTur', methods=('GET', 'POST'))
+def createTur():
+    
+    if request.method == 'POST':
+
+        numero = request.form['numero']
+        professor = request.form['professor']
+        materia = request.form['materia']
+
+        conn = get_db_connection()
+        conn.execute('INSERT INTO turma (numero, materia_id, professor_id) VALUES (?, ?, ?)',
+                        (numero, professor,materia))
+        conn.commit()
+        conn.close()
+        
+    return render_template('createTur.html')
+
+@app.route('/turmas', methods=('GET', 'POST'))
+def turmas():
+    conn = get_db_connection()
+    posts = conn.execute('SELECT * FROM vw_turma').fetchall()
+    conn.close()
+    return render_template('turmas.html', posts=posts)
+
+@app.route('/<int:id>/editTur', methods=('GET', 'POST'))
+def editTur(id):
+    post = get_post(id)
+    if request.method == 'POST':
+
+        numero = request.form['numero']
+        professor = request.form['numero']
+
+        conn = get_db_connection()
+        conn.execute('UPDATE turma SET numero = ?, professor_id = ?'
+                        ' WHERE id = ?',
+                        (numero,professor, id))
+        conn.commit()
+        conn.close()
+        return redirect(url_for('turmas'))
+    return render_template('editTur.html')
+
+@app.route('/<int:id>/deleteTur', methods=('POST','GET'))
+def deleteTur(id):
+    conn = get_db_connection()
+    conn.execute('DELETE FROM turma WHERE id = ?', (id,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('turmas'))
+
+@app.route('/createProf', methods=('GET', 'POST'))
+def createProf():
+    
+    if request.method == 'POST':
+
+        nome = request.form['nome']
+        depart = request.form['departamento']
+
+        conn = get_db_connection()
+        conn.execute('INSERT INTO professores (nome, departamento_id) VALUES (?, ?)',
+                        (nome, depart))
+        conn.commit()
+        conn.close()
+        
+
+    return render_template('createProf.html')
+
+@app.route('/professores', methods=('GET', 'POST'))
+def professores():
+    conn = get_db_connection()
+    posts = conn.execute('SELECT * FROM professores').fetchall()
+    conn.close()
+    return render_template('professores.html', posts=posts)
+
+@app.route('/<int:id>/editProf', methods=('GET', 'POST'))
+def editProf(id):
+    post = get_post(id)
+    if request.method == 'POST':
+        nome = request.form['nome']
+        depart = request.form['departamento']
+        conn = get_db_connection()
+        conn.execute('UPDATE professores SET nome = ?, departamento_id = ?'
+                        ' WHERE id = ?',
+                        (nome, depart, id))
+        conn.commit()
+        conn.close()
+        return redirect(url_for('professores'))
+    return render_template('editProf.html')
+
+@app.route('/<int:id>/deleteProf', methods=('POST','GET'))
+def deleteProf(id):
+    conn = get_db_connection()
+    conn.execute('DELETE FROM professores WHERE id = ?', (id,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('professores'))

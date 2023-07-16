@@ -1,0 +1,14 @@
+{% block content %}
+    <h1>{% block title %} Todos os alunos {% endblock %}</h1>
+    <a href="/createAva"> cria uma avaliacao</a>
+    <a href="/denuncias"> ver denuncias</a>
+
+    {% for post in posts %}
+        <h2>{{ post['email'] }} </h2>
+
+        {% if is_admin : %}
+        <a href="{{url_for('deleteAlu',  id=post['id'])}}"> apagar esse aluno</a>
+        {% endif %}
+
+    {% endfor %}
+{% endblock %}

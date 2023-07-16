@@ -1,0 +1,13 @@
+{% block content %}
+    <h1>{% block title %} Avaliações das aulas {% endblock %}</h1>
+    <a href="/home"> home </a>
+    <a href="createProf"> cadastrar um novo professor </a>
+
+    {% for post in posts %}
+        <h2>{{ post['nome'] }} </h2>
+        <h3>{{ post['departamento_id'] }}</h3>
+        <a href="{{url_for('editProf', id=post['id'])}}"> editar esse professor</a>
+        <a href="{{url_for('deleteProf',  id=post['id'])}}"> apagar esse professor</a>
+
+    {% endfor %}
+{% endblock %}
